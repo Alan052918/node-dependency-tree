@@ -233,7 +233,7 @@ function getPakcageId(config) {
     let i = 0;
     while (directoryList.length > 0 && directoryList[directoryList.length - 1] !== 'node_modules') {
       const pkgPath = directoryList.join(path.sep).concat(path.sep, 'package.json');
-      if (pkgPath.includes('@types')) console.log('NESTED YES');
+      // if (pkgPath.includes('@types')) console.log('NESTED YES');
       if (fs.existsSync(pkgPath)) {
         const pkgFile = fs.readFileSync(pkgPath);
         const pkgName = JSON.parse(pkgFile)['name'];
