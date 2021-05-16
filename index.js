@@ -222,28 +222,20 @@ function dedupeNonExistent(nonExistent) {
 }
 
 /**
- * Get the "_id" value in package.json file of a JavaScript module which is its module name and version
+ * Get the name of the package whose files are used
  *
  * @param {Config} config
- * @return {String}
+ * @return {String} absolute path to the package
  */
 function getPakcageId(config) {
   const directoryList = config.filename.split(path.sep);
   if (directoryList.includes('node_modules')) {
-    let i = 0;
     while (directoryList.length > 0 && directoryList[directoryList.length - 1] !== 'node_modules') {
       const pkgPath = directoryList.join(path.sep).concat(path.sep, 'package.json');
-      // if (pkgPath.includes('@types')) console.log('NESTED YES');
       if (fs.existsSync(pkgPath)) {
-        const pkgFile = fs.readFileSync(pkgPath);
-        const pkgName = JSON.parse(pkgFile)['name'];
-        const pkgVersion = JSON.parse(pkgFile)['version'];
-        const pkgId = pkgName.concat('@' + pkgVersion);
-        config.pkgId = pkgId;
-        return pkgId;
+        return directoryList.join(path.sep);
       }
       directoryList.pop();
-      ++i;
     }
   }
   debug('package.json does not exist');
